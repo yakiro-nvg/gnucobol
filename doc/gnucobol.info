@@ -1,4 +1,4 @@
-This is gnucobol.info, produced by makeinfo version 6.5 from
+This is gnucobol.info, produced by makeinfo version 6.7 from
 gnucobol.texi.
 
 Permission is granted to make and distribute verbatim copies of this
@@ -1027,11 +1027,11 @@ command line arguments to COBOL.
 
    You can compile your C program as follows:
 
-     cc -c `cob-config --cflags` main.c
+     cc -c ̀cob-config --cflags̀ main.c
 
    The compiled object must be linked with libcob as follows:
 
-     cc -o main main.o `cob-config --libs`
+     cc -o main main.o ̀cob-config --libs̀
 
 
 File: gnucobol.info,  Node: Static C to COBOL,  Next: Dynamic C to COBOL,  Prev: Main C program,  Up: C interface
@@ -2315,6 +2315,9 @@ A.1 Common Options
 
 '-C'
      translation only; convert COBOL to C
+
+'- '
+     generate COBOL abstract machine 'IR' only
 
 '-S'
      compile only; output assembly file
@@ -5459,43 +5462,48 @@ Node: Building library30608
 Node: Using library30991
 Node: C interface31562
 Node: Main C program31936
-Node: Static C to COBOL33093
-Node: Dynamic C to COBOL34800
-Node: Static COBOL to C36323
-Node: Dynamic COBOL to C37759
-Node: Interface functions for C38202
-Node: Customize39732
-Node: Customizing compiler39956
-Node: Customizing library40524
-Node: Optimize41284
-Node: Optimize options41587
-Node: Optimize call42117
-Node: Optimize binary42497
-Node: Debug43073
-Node: Debug options43229
-Node: Extensions43558
-Node: SELECT44150
-Node: Indexed44901
-Node: Extended ACCEPT45081
-Node: ACCEPT special49264
-Node: Extended DISPLAY51790
-Node: FUNCTION CONTENT-LENGTH54300
-Node: FUNCTION CONTENT-OF54969
-Node: System Routines55838
-Node: CBL_GC_GETOPT56371
-Node: CBL_GC_HOSTED60467
-Node: CBL_GC_NANOSLEEP64996
-Node: CBL_GC_FORK65520
-Node: CBL_GC_WAITPID68544
-Node: Appendices69201
-Node: Appendix A69771
-Node: Appendix B88480
-Node: Appendix C127434
-Node: Appendix D133073
-Node: Appendix E135478
-Node: Appendix F136702
-Node: Appendix G145221
-Node: Appendix H146220
-Node: Appendix I162882
+Node: Static C to COBOL33097
+Node: Dynamic C to COBOL34804
+Node: Static COBOL to C36327
+Node: Dynamic COBOL to C37763
+Node: Interface functions for C38206
+Node: Customize39736
+Node: Customizing compiler39960
+Node: Customizing library40528
+Node: Optimize41288
+Node: Optimize options41591
+Node: Optimize call42121
+Node: Optimize binary42501
+Node: Debug43077
+Node: Debug options43233
+Node: Extensions43562
+Node: SELECT44154
+Node: Indexed44905
+Node: Extended ACCEPT45085
+Node: ACCEPT special49268
+Node: Extended DISPLAY51794
+Node: FUNCTION CONTENT-LENGTH54304
+Node: FUNCTION CONTENT-OF54973
+Node: System Routines55842
+Node: CBL_GC_GETOPT56375
+Node: CBL_GC_HOSTED60471
+Node: CBL_GC_NANOSLEEP65000
+Node: CBL_GC_FORK65524
+Node: CBL_GC_WAITPID68548
+Node: Appendices69205
+Node: Appendix A69775
+Node: Appendix B88537
+Node: Appendix C127491
+Node: Appendix D133130
+Node: Appendix E135535
+Node: Appendix F136759
+Node: Appendix G145278
+Node: Appendix H146277
+Node: Appendix I162939
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:

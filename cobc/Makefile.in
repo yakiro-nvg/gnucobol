@@ -36,7 +36,7 @@
 # along with GnuCOBOL.  If not, see <https://www.gnu.org/licenses/>.
 
 # aminclude_static.am generated automatically by Autoconf
-# from AX_AM_MACROS_STATIC on Wed Dec 23 11:51:57 CET 2020
+# from AX_AM_MACROS_STATIC on Sun Feb 14 16:17:07 +07 2021
 
 VPATH = @srcdir@
 am__is_gnu_make = { \
@@ -146,7 +146,7 @@ am_cobc_OBJECTS = cobc.$(OBJEXT) ppparse.$(OBJEXT) pplex.$(OBJEXT) \
 	parser.$(OBJEXT) scanner.$(OBJEXT) config.$(OBJEXT) \
 	reserved.$(OBJEXT) error.$(OBJEXT) tree.$(OBJEXT) \
 	field.$(OBJEXT) typeck.$(OBJEXT) codegen.$(OBJEXT) \
-	help.$(OBJEXT) codeoptim.$(OBJEXT)
+	codegen_cam.$(OBJEXT) help.$(OBJEXT) codeoptim.$(OBJEXT)
 cobc_OBJECTS = $(am_cobc_OBJECTS)
 am__DEPENDENCIES_1 =
 cobc_DEPENDENCIES = $(top_builddir)/libcob/libcob.la \
@@ -172,12 +172,12 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/build_aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/cobc.Po ./$(DEPDIR)/codegen.Po \
-	./$(DEPDIR)/codeoptim.Po ./$(DEPDIR)/config.Po \
-	./$(DEPDIR)/error.Po ./$(DEPDIR)/field.Po ./$(DEPDIR)/help.Po \
-	./$(DEPDIR)/parser.Po ./$(DEPDIR)/pplex.Po \
-	./$(DEPDIR)/ppparse.Po ./$(DEPDIR)/reserved.Po \
-	./$(DEPDIR)/scanner.Po ./$(DEPDIR)/tree.Po \
-	./$(DEPDIR)/typeck.Po
+	./$(DEPDIR)/codegen_cam.Po ./$(DEPDIR)/codeoptim.Po \
+	./$(DEPDIR)/config.Po ./$(DEPDIR)/error.Po \
+	./$(DEPDIR)/field.Po ./$(DEPDIR)/help.Po ./$(DEPDIR)/parser.Po \
+	./$(DEPDIR)/pplex.Po ./$(DEPDIR)/ppparse.Po \
+	./$(DEPDIR)/reserved.Po ./$(DEPDIR)/scanner.Po \
+	./$(DEPDIR)/tree.Po ./$(DEPDIR)/typeck.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -459,7 +459,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 xml2_config_found = @xml2_config_found@
 cobc_SOURCES = cobc.c cobc.h ppparse.y pplex.c parser.y scanner.c config.c \
-	reserved.c error.c tree.c tree.h field.c typeck.c codegen.c help.c \
+	reserved.c error.c tree.c tree.h field.c typeck.c codegen.c codegen_cam.c help.c \
 	config.def flag.def warning.def codeoptim.def ppparse.def codeoptim.c
 
 
@@ -597,6 +597,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cobc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codegen.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codegen_cam.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/codeoptim.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@ # am--include-marker
@@ -826,6 +827,7 @@ clean-am: clean-binPROGRAMS clean-generic clean-libtool clean-local \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/cobc.Po
 	-rm -f ./$(DEPDIR)/codegen.Po
+	-rm -f ./$(DEPDIR)/codegen_cam.Po
 	-rm -f ./$(DEPDIR)/codeoptim.Po
 	-rm -f ./$(DEPDIR)/config.Po
 	-rm -f ./$(DEPDIR)/error.Po
@@ -885,6 +887,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/cobc.Po
 	-rm -f ./$(DEPDIR)/codegen.Po
+	-rm -f ./$(DEPDIR)/codegen_cam.Po
 	-rm -f ./$(DEPDIR)/codeoptim.Po
 	-rm -f ./$(DEPDIR)/config.Po
 	-rm -f ./$(DEPDIR)/error.Po

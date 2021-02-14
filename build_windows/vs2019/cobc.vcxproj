@@ -99,6 +99,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)..;$(SolutionDir)..\..;$(SolutionDir)..\..\cobc;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -198,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\cobc\cobc.c" />
     <ClCompile Include="..\..\cobc\codegen.c" />
+    <ClCompile Include="..\..\cobc\codegen_cam.c" />
     <ClCompile Include="..\..\cobc\codeoptim.c" />
     <ClCompile Include="..\..\cobc\config.c" />
     <ClCompile Include="..\..\cobc\error.c" />

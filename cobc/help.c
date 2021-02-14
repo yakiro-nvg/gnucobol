@@ -95,6 +95,7 @@ cobc_print_usage_common_options (void)
 	        "                        dynamically loadable module"));
 	puts (_("  -E                    preprocess only; do not compile or link"));
 	puts (_("  -C                    translation only; convert COBOL to C"));
+	puts (_("  -@                    generate COBOL abstract machine IR only"));
 	puts (_("  -S                    compile only; output assembly file"));
 	puts (_("  -c                    compile and assemble, but do not link"));
 	puts (_("  -T <file>             generate and place a wide program listing into <file>"));

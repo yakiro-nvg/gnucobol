@@ -418,6 +418,7 @@ static char		*cobc_run_args = NULL;
 static size_t		save_temps = 0;
 static size_t		save_all_src = 0;
 static size_t		save_c_src = 0;
+static size_t		save_cam_ir = 0;
 static signed int	verbose_output = 0;
 static size_t		cob_optimize = 0;
 
@@ -540,7 +541,7 @@ static const char	*const cob_csyns[] = {
 
 #define COB_NUM_CSYNS	sizeof(cob_csyns) / sizeof(cob_csyns[0])
 
-static const char short_options[] = "hVivqECScbmxjdFROPgwo:t:T:I:L:l:D:K:k:";
+static const char short_options[] = "hVivqEC@ScbmxjdFROPgwo:t:T:I:L:l:D:K:k:";
 
 #define	CB_NO_ARG	no_argument
 #define	CB_RQ_ARG	required_argument
@@ -719,7 +720,11 @@ cobc_free_mem (void)
 		cobc_free (repsl);
 	}
 	cobc_mainmem_base = NULL;
-	cb_init_codegen ();
+	if (save_cam_ir) {
+		cb_init_codegen_cam ();
+	} else {
+		cb_init_codegen ();
+	}
 	ppp_clear_lists ();
 }
 
@@ -2102,7 +2107,7 @@ clean_up_intermediates (struct filename *fn, const int status)
 		 (cb_compile_level == CB_LEVEL_PREPROCESS && save_temps))) {
 		cobc_check_action (fn->preprocess);
 	}
-	if (save_c_src) {
+	if (save_c_src || save_cam_ir) {
 		return;
 	}
 	if (fn->need_translate &&
@@ -2611,7 +2616,7 @@ cobc_print_info (void)
 static void
 cobc_options_error_nonfinal (void)
 {
-	cobc_err_exit (_("only one of options 'E', 'S', 'C', 'c' may be specified"));
+	cobc_err_exit (_("only one of options 'E', 'S', 'C', '@', 'c' may be specified"));
 }
 
 static void
@@ -3164,6 +3169,15 @@ process_command_line (const int argc, char **argv)
 				cobc_options_error_nonfinal ();
 			}
 			save_c_src = 1;
+			cb_compile_level = CB_LEVEL_TRANSLATE;
+			break;
+
+		case '@':
+			/* -@ : Generate CAM IR */
+			if (cb_compile_level != 0) {
+				cobc_options_error_nonfinal ();
+			}
+			save_cam_ir = 1;
 			cb_compile_level = CB_LEVEL_TRANSLATE;
 			break;
 
@@ -4045,6 +4059,8 @@ process_filename (const char *filename)
 		fn->translate = cobc_main_strdup (fn->source);
 	} else if (output_name && cb_compile_level == CB_LEVEL_TRANSLATE) {
 		fn->translate = cobc_main_strdup (output_name);
+	} else if (save_cam_ir) {
+		fn->translate = cobc_main_stradd_dup (fbasename, ".cam");
 	} else if (save_all_src || save_temps || save_c_src ||
 		   cb_compile_level == CB_LEVEL_TRANSLATE) {
 		fn->translate = cobc_main_stradd_dup (fbasename, ".c");
@@ -4068,7 +4084,7 @@ process_filename (const char *filename)
 	fn->translate_len = strlen (fn->translate);
 
 	/* Set storage filename */
-	if (fn->need_translate) {
+	if (fn->need_translate && !save_cam_ir) {
 #ifndef HAVE_8DOT3_FILENAMES
 		fn->trstorage = cobc_main_stradd_dup (fn->translate, ".h");
 #else
@@ -7450,7 +7466,7 @@ print_program_listing (void)
 	cb_listing_file_struct->name = NULL;
 }
 
-/* Create single-element C source */
+/* Create single-element source */
 
 static int
 process_translate (struct filename *fn)
@@ -7554,20 +7570,22 @@ process_translate (struct filename *fn)
 	}
 
 	/* Open the common storage file */
-	cb_storage_file_name = cobc_main_strdup (fn->trstorage);
-	if (cb_unix_lf) {
-		cb_storage_file = fopen (cb_storage_file_name, "wb");
-	} else {
-		cb_storage_file = fopen (cb_storage_file_name, "w");
-	}
-	if (!cb_storage_file) {
-		cobc_terminate (cb_storage_file_name);
-	}
-	/* remove possible path from header name for later codegen */
-	if (strrchr (cb_storage_file_name, '/')
-	 || strrchr (cb_storage_file_name, '\\')) {
-		char	*buffer = file_basename (cb_storage_file_name, COB_BASENAME_KEEP_EXT);
-		memcpy ((void *) cb_storage_file_name, (void *) buffer, strlen (buffer) + 1);
+	if (!save_cam_ir) {
+		cb_storage_file_name = cobc_main_strdup (fn->trstorage);
+		if (cb_unix_lf) {
+			cb_storage_file = fopen (cb_storage_file_name, "wb");
+		} else {
+			cb_storage_file = fopen (cb_storage_file_name, "w");
+		}
+		if (!cb_storage_file) {
+			cobc_terminate (cb_storage_file_name);
+		}
+		/* remove possible path from header name for later codegen */
+		if (strrchr (cb_storage_file_name, '/')
+		 || strrchr (cb_storage_file_name, '\\')) {
+			char	*buffer = file_basename (cb_storage_file_name, COB_BASENAME_KEEP_EXT);
+			memcpy ((void *) cb_storage_file_name, (void *) buffer, strlen (buffer) + 1);
+		}
 	}
 
 	/* Process programs in original order */
@@ -7577,6 +7595,8 @@ process_translate (struct filename *fn)
 	lf = NULL;
 	ret = 1;
 	for (p = current_program; p; p = p->next_program, ret++) {
+		if (save_cam_ir) continue; // no storage file
+
 		lf = cobc_main_malloc (sizeof(struct local_filename));
 		lf->local_name = cobc_main_malloc (fn->translate_len + 12U);
 #ifndef HAVE_8DOT3_FILENAMES
@@ -7623,6 +7643,12 @@ process_translate (struct filename *fn)
 				cb_insert_common_prog (r, nlp->nested_prog);
 			}
 		}
+	}
+
+	if (save_cam_ir) {
+		/* Translate to CAM */
+		codegen_cam (current_program, fn->translate);
+		return !!errorcount;
 	}
 
 	/* Translate to C */
@@ -8615,7 +8641,7 @@ process_file (struct filename *fn, int status)
 		return status;
 	}
 	if (fn->need_translate) {
-		/* Parse / Translate (to C code) */
+		/* Parse / Translate (to C / CAM code) */
 		fn->has_error = process_translate (fn);
 		status |= fn->has_error;
 		if (cb_src_list_file) {
@@ -8628,7 +8654,11 @@ process_file (struct filename *fn, int status)
 			cobc_free (mptrt);
 		}
 		cobc_parsemem_base = NULL;
-		cb_init_codegen ();
+		if (save_cam_ir) {
+			cb_init_codegen_cam ();
+		} else {
+			cb_init_codegen ();
+		}
 	} else {
 		if (cb_src_list_file) {
 			print_program_listing ();

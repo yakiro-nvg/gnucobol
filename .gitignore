@@ -21,3 +21,6 @@ stamp-h1
 tests/atconfig
 tests/atlocal
 tests/run_prog_manual.sh
+autom4te.cache/output.0
+autom4te.cache/requests
+autom4te.cache/traces.0

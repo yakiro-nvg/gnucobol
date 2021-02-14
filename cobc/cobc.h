@@ -655,6 +655,9 @@ extern void		cob_gen_optim (const enum cb_optim);
 /* codegen.c */
 extern void		cb_init_codegen (void);
 
+/* codegen_cam.c */
+extern void		cb_init_codegen_cam (void);
+
 /* error.c */
 #define CB_MSG_STYLE_GCC	0
 #define CB_MSG_STYLE_MSC	1U
