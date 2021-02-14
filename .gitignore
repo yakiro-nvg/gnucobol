@@ -4,6 +4,8 @@
 *.so
 *.lo
 *.la
+tests/
+build_windows/
 bin/cob-config
 bin/cobcrun
 cobc/cobc

@@ -32,7 +32,7 @@
    * switch from MPIR (gmp-compat)  to GMP
 */
 
-#define CONFIGURED_ISAM   VBISAM        /* see possible values above */
+#define CONFIGURED_ISAM   NOISAM        /* see possible values above */
 #define CONFIGURED_CURSES PDCURSES      /* see possible values above */
 #define CONFIGURED_XML    NOXML         /* see possible values above */
 #define CONFIGURED_JSON   NOJSON        /* see possible values above */
